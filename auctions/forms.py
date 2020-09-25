@@ -5,3 +5,4 @@ class NewListingForm(forms.Form):
     description = forms.CharField(label="Description:", widget=forms.Textarea(attrs={"rows":10, "cols":80}))
     starting_bid = forms.IntegerField(label="Starting Bid ($):")
     category = forms.CharField(max_length=100, required=False)
+    image = forms.ImageField(required=False)
