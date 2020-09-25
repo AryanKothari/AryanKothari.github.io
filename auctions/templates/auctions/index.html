@@ -1,0 +1,22 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="margin-left: 10px;">Active Listings</h2>
+    {% for listing in listings %}
+    <div class="listing">
+        <a href="{% url 'listing_view' listing.title %}">
+            <h4 style="text-align: left; float: left; margin-left: 20px; margin-top: 2px;"> {{ listing.title }} </h4> 
+        </a>
+        <a href="{% url 'category_view' listing.category %}" style="color:crimson;">
+            <h7 style="text-align: right; float: right; background-color: brown;">{{listing.category}}</h7>
+        </a>
+        <hr style="clear:both;"/>
+        <h6 style="padding-top: 20px;">Description:</h4>
+            <p>{{listing.description}}</p>
+             <br>
+        <h6 style="padding-top: 5px;">Starting Bid:</h4>
+             <p>${{listing.price}}</p> <br><br>
+             <p style="text-align: right; float: right; font-weight: lighter; margin-right: 30px; margin-top: -25px;">{{listing.creation_date}} UTC</p>
+    </div>
+    {% endfor %}
+{% endblock %}
