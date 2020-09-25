@@ -7,16 +7,15 @@
     <a href="{% url 'listing_view' listing.title %}">
         <h4 style="text-align: left; padding-top: 10px; margin-left: 30px;"> {{ listing.title }} </h4> 
     </a>
-    <a href="{% url 'category_view' listing.category %}" style="color:crimson;">
-        <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">{{listing.category}}</h7>
-    </a>
+        <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">Category: {{listing.category}}</h7>
     <hr style="clear:both; margin-top: -30px;"/>
-    <h6 style="padding-top: 20px; margin-left: 300px;">Description:</h4>
+    <img src="{{ listing.image.url }}">
+    <h6 style="padding-top: -30px; margin-left: 300px;">Description:</h4>
         <p style="margin-left: 300px;">{{listing.description}}</p>
          <br>
     <h6 style="padding-top: 5px; margin-left: 300px;">Starting Bid:</h4>
          <p style="margin-left: 300px;">${{listing.price}}</p> <br><br>
          <p style="text-align: right; float: right; font-weight: lighter; margin-right: 30px; margin-top: -25px;">{{listing.creation_date}} UTC</p>
 </div>
-{% endfor %}
+{% endfor %}   
 {% endblock %}

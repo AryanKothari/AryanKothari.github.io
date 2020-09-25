@@ -15,7 +15,7 @@ def index(request):
 
 def create_listing(request):
     if request.method == "POST":
-        form = NewListingForm(request.POST)
+        form = NewListingForm(request.POST, request.FILES)
         if form.is_valid():
             title = form.cleaned_data['title']
             description = form.cleaned_data['description']
@@ -43,7 +43,7 @@ def categories(request):
     })
 
 def category_view(request, category):
-    listings = Listing.objects.filter(category=category)
+    listings = Listing.objects.filter(category=category).order_by('-creation_date')
     return render(request, "auctions/category_view.html", {
         "category": category,
         "listings": listings,
