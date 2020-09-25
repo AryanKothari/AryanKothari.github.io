@@ -21,8 +21,10 @@ def create_listing(request):
             description = form.cleaned_data['description']
             starting_bid = form.cleaned_data['starting_bid']
             category = form.cleaned_data['category']
+            if category == '':
+                category = "Other"
             if 'image' in request.FILES:
-                image = request.FILES.get['image']
+                image = request.FILES['image']
                 listing = Listing(title=title, description=description, price=starting_bid, category=category, image=image)
             else:
                 listing = Listing(title=title, description=description, price=starting_bid, category=category)

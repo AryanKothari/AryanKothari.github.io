@@ -7,7 +7,7 @@
         <a href="{% url 'listing_view' listing.title %}">
             <h4 style="text-align: left; padding-top: 10px; margin-left: 30px;"> {{ listing.title }} </h4> 
         </a>
-        <a href="category_view/{{category}}" style="color:crimson;">
+        <a href="categories/{{listing.category}}" style="color:crimson;">
             <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">Category: {{listing.category}}</h7>
         </a>
         <hr style="clear:both; margin-top: -30px;"/>
