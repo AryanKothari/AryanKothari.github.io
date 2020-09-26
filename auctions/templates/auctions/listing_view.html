@@ -2,9 +2,23 @@
 
 {% block body %}
 <h2 style="margin-left: 10px; padding-bottom: 10px;">Listing: {{listing.title }} </h2>
+<div class="listing_view">
+    <a href="categories/{{listing.category}}" style="color:crimson;">
+        <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">Category: {{listing.category}}</h7>
+    </a>
+    <img src="{{ listing.imageURL }}">
+    <h6 style="padding-top: -30px; margin-left: 300px;">Description:</h4>
+        <p style="margin-left: 300px;">{{listing.description}}</p>
+         <br>
+    <h6 style="padding-top: 5px; margin-left: 300px;">Starting Bid:</h4>
+         <p style="margin-left: 300px;">${{listing.price}}</p> <br><br>
+         <p style="text-align: right; float: right; font-weight: lighter; margin-right: 30px; margin-top: -25px;">{{listing.creation_date}} UTC</p>
+</div> 
+
+<br><br>
+
 <hr>
 <h5 style="margin-left: 10px; padding-bottom: 10px; font-weight: normal;">Comments...<a href="{% url 'create_comment' listing.title %}" style="font-size: small; padding-left: 10px;">Add One Here</a></h5>
-
 {% if not listing.comments.all %}
 <div style="margin-left: 10px; padding-bottom: 10px;">
        <em> No Comments Yet... </em> 

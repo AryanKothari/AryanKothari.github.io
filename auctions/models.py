@@ -5,9 +5,6 @@ from time import strftime
 from PIL import Image
 
 
-class User(AbstractUser):
-    pass
-
 class Listing(models.Model):
     title = models.CharField(max_length=64, unique=True)
     description = models.TextField()
@@ -18,6 +15,10 @@ class Listing(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+
+class User(AbstractUser):
+    pass
+
         
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, related_name="comments", on_delete=models.CASCADE)
