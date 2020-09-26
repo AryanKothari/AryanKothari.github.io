@@ -42,7 +42,7 @@ def create_comment(request, listing):
     if request.method == "POST":
         form = NewCommentForm(request.POST)
         if form.is_valid():
-            name = form.cleaned_data['title']
+            name = request.user.username
             body = form.cleaned_data['body']
             comment = Comment(listing=listing, name=name, body=body)
             comment.save()
