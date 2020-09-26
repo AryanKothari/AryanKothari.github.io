@@ -2,17 +2,20 @@
 
 {% block body %}
 <h2 style="margin-left: 10px; padding-bottom: 10px;">Listing: {{listing.title }} </h2>
-<h5 style="margin-left: 10px; padding-bottom: 10px; font-weight: normal;">Comments...</h5>
+<hr>
+<h5 style="margin-left: 10px; padding-bottom: 10px; font-weight: normal;">Comments...<a href="{% url 'create_comment' listing.title %}" style="font-size: small; padding-left: 10px;">Add One Here</a></h5>
+
 {% if not listing.comments.all %}
-    No Comments Yet... <a href="#">Add One</a>
+<div style="margin-left: 10px; padding-bottom: 10px;">
+       <em> No Comments Yet... </em> 
 {% else %}
     {% for comment in listing.comments.all %}
-       <strong>
+       <strong style="margin-left: 10px; padding-bottom: 10px; font-size: small;">
            {{ comment.name }} - 
            {{ comment.creation_date }}
        </strong> 
        <br>
-       {{ comment.body }}
+       <p style="margin-left: 10px; padding-bottom: 10px; font-size: small;">{{ comment.body }}</p>
     {% endfor %}
 {% endif %}
 {% endblock %}

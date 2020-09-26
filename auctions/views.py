@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from .models import User, Listing, Comment
-from .forms import NewListingForm
+from .forms import NewListingForm, NewCommentForm
 
 
 def index(request):
@@ -35,7 +35,28 @@ def create_listing(request):
     else:
         return render(request, "auctions/create_listing.html", {
             "form": NewListingForm(),
-        }) 
+        })
+
+def create_comment(request, listing):
+    listing = Listing.objects.get(title=listing)
+    if request.method == "POST":
+        form = NewCommentForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            comment = Comment(listing=listing, name=name, body=body)
+            comment.save()
+            return HttpResponseRedirect(f'/listing/{listing}')
+        else:
+                return render(request, "auctions/create_comment.html", {
+                    "form": form,
+                    "listing": listing,
+                })
+    else:
+        return render(request, "auctions/create_comment.html", {
+        "form": NewCommentForm(),
+        "listing": listing,
+        })
 
 def listing_view(request, listing):
     listing = Listing.objects.get(title=listing)
