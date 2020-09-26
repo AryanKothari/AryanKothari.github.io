@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<h2 style="margin-left: 10px; padding-bottom: 10px;">Add Comment</h2>
+    <div style="margin-left: 20px;">
+    <form action="{% url 'create_comment' listing.title %}" method="POST">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Add Comment"/>
+    </form>
+{% else %}
+<h4>You Must Login First</h4>
+{% endif %}
+</div>
+{% endblock %}
