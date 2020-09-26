@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing
+from .models import User, Listing, Comment
 from .forms import NewListingForm
 
 
@@ -38,8 +38,9 @@ def create_listing(request):
         }) 
 
 def listing_view(request, listing):
+    listing = Listing.objects.get(title=listing)
     return render(request, "auctions/listing_view.html", {
-        "listing": listing,
+        "listing": listing
     })
 
 def categories(request):

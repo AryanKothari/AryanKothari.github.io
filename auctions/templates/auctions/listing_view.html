@@ -1,5 +1,18 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2 style="margin-left: 10px; padding-bottom: 10px;">Listing: {{listing}}</h2>
+<h2 style="margin-left: 10px; padding-bottom: 10px;">Listing: {{listing.title }} </h2>
+<h5 style="margin-left: 10px; padding-bottom: 10px; font-weight: normal;">Comments...</h5>
+{% if not listing.comments.all %}
+    No Comments Yet... <a href="#">Add One</a>
+{% else %}
+    {% for comment in listing.comments.all %}
+       <strong>
+           {{ comment.name }} - 
+           {{ comment.creation_date }}
+       </strong> 
+       <br>
+       {{ comment.body }}
+    {% endfor %}
+{% endif %}
 {% endblock %}

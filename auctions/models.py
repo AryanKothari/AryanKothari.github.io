@@ -18,3 +18,12 @@ class Listing(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+        
+class Comment(models.Model):
+    listing = models.ForeignKey(Listing, related_name="comments", on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    body = models.TextField()
+    creation_date = models.DateTimeField(auto_now_add = True, editable=False)
+
+    def __str__(self):
+        return '%s - %s' % (self.listing.title, self.name)
