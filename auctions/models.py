@@ -14,7 +14,7 @@ class Listing(models.Model):
     price = models.IntegerField()
     category = models.CharField(max_length=100, blank=True, default="Unspecified")
     creation_date = models.DateTimeField(auto_now_add = True, editable=False)
-    image = models.ImageField(blank=True, default='default.jpg', upload_to='listing_pics')
+    imageURL = models.CharField(max_length=64,default=None,blank=True,null=True)
 
     def __str__(self):
         return f"{self.title}"

@@ -11,10 +11,8 @@ body {
 
 img {
     display: block;
-    max-width:230px;
-    max-height:150px;
-    width: auto;
-    height: auto;
+    width: 220px;
+    height: 140px;
     margin-left: 15px;
     float: left;
   }

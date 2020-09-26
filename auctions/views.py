@@ -17,17 +17,17 @@ def create_listing(request):
     if request.method == "POST":
         form = NewListingForm(request.POST, request.FILES)
         if form.is_valid():
-            title = form.cleaned_data['title']
-            description = form.cleaned_data['description']
-            starting_bid = form.cleaned_data['starting_bid']
-            category = form.cleaned_data['category']
-            if category == '':
-                category = "Other"
-            if 'image' in request.FILES:
-                image = request.FILES['image']
-                listing = Listing(title=title, description=description, price=starting_bid, category=category, image=image)
-            else:
-                listing = Listing(title=title, description=description, price=starting_bid, category=category)
+            listing = Listing()
+            listing.title = form.cleaned_data['title']
+            listing.description = form.cleaned_data['description']
+            listing.price = form.cleaned_data['starting_bid']
+            imageURL = ""
+            listing.category = form.cleaned_data['category']
+            if request.POST.get('imageURL'):
+                imageURL = form.cleaned_data['imageURL']
+            else :
+                imageURL = "https://wallpaperaccess.com/full/1605486.jpg"
+            listing.imageURL = imageURL
             listing.save()
             return HttpResponseRedirect(reverse('index'))
         else:
