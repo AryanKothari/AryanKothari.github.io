@@ -8,5 +8,5 @@ class NewListingForm(forms.Form):
     image = forms.ImageField(label="Image (Optional)", required=False)
 
 class NewCommentForm(forms.Form):
-    title = forms.CharField(max_length=255)
+    title = forms.CharField(label="Name", max_length=255)
     body = forms.CharField(label="Content:", widget=forms.Textarea(attrs={"rows":10, "cols":80}))

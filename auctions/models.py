@@ -25,5 +25,8 @@ class Comment(models.Model):
     body = models.TextField()
     creation_date = models.DateTimeField(auto_now_add = True, editable=False)
 
+    class Meta:
+       ordering = ('-creation_date',)
+
     def __str__(self):
         return '%s - %s' % (self.listing.title, self.name)
