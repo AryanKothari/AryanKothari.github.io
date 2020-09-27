@@ -15,10 +15,12 @@ class Listing(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
+    class Meta:
+       ordering = ('-creation_date',)
 
 class User(AbstractUser):
-    pass
-
+    listings = models.ManyToManyField(Listing)
         
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, related_name="comments", on_delete=models.CASCADE)

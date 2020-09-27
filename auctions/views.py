@@ -39,6 +39,7 @@ def create_listing(request):
 def wishlist_view(request, username):
     return render(request, "auctions/wishlist.html", {
         "username": username,
+        "listings": Listing.objects.filter(user__username=username)
     })
 
 def create_comment(request, listing):
@@ -80,6 +81,18 @@ def category_view(request, category):
         "category": category,
         "listings": listings,
     })
+
+
+def addwishlist(request, listing):
+    if request.user.username:
+        listing = Listing.objects.get(title=listing)
+        user = User.objects.get(username=request.user)
+        listing = Listing.objects.get(title=listing)
+        user.listings.add(listing)
+        return HttpResponseRedirect(f'/listing/{listing}')
+    else:
+        return HttpResponseRedirect(f'/listing/{listing}')
+
 
 def login_view(request):
     if request.method == "POST":
