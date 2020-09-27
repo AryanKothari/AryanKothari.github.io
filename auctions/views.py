@@ -36,6 +36,10 @@ def create_listing(request):
         return render(request, "auctions/create_listing.html", {
             "form": NewListingForm(),
         })
+def wishlist_view(request, username):
+    return render(request, "auctions/wishlist.html", {
+        "username": username,
+    })
 
 def create_comment(request, listing):
     listing = Listing.objects.get(title=listing)
