@@ -65,8 +65,13 @@ def create_comment(request, listing):
 
 def listing_view(request, listing):
     listing = Listing.objects.get(title=listing)
+    wishlist_items = Listing.objects.filter(user=request.user)
+    exists = False
+    if listing in wishlist_items:
+        exists = True
     return render(request, "auctions/listing_view.html", {
-        "listing": listing
+        "listing": listing,
+        "exists": exists,
     })
 
 def categories(request):
@@ -85,10 +90,18 @@ def category_view(request, category):
 
 def addwishlist(request, listing):
     if request.user.username:
-        listing = Listing.objects.get(title=listing)
         user = User.objects.get(username=request.user)
         listing = Listing.objects.get(title=listing)
         user.listings.add(listing)
+        return HttpResponseRedirect(f'/listing/{listing}')
+    else:
+        return HttpResponseRedirect(f'/listing/{listing}')
+
+def removewishlist(request, listing):
+    if request.user.username:
+        user = User.objects.get(username=request.user)
+        listing = Listing.objects.get(title=listing)
+        user.listings.remove(listing)
         return HttpResponseRedirect(f'/listing/{listing}')
     else:
         return HttpResponseRedirect(f'/listing/{listing}')
