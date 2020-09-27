@@ -3,7 +3,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User, Listing, Comment
+from .models import User, Listing, Comment, Bid
 from .forms import NewListingForm, NewCommentForm
 
 
@@ -36,6 +36,7 @@ def create_listing(request):
         return render(request, "auctions/create_listing.html", {
             "form": NewListingForm(),
         })
+
 def wishlist_view(request, username):
     return render(request, "auctions/wishlist.html", {
         "username": username,
@@ -65,14 +66,32 @@ def create_comment(request, listing):
 
 def listing_view(request, listing):
     listing = Listing.objects.get(title=listing)
-    wishlist_items = Listing.objects.filter(user=request.user)
     exists = False
-    if listing in wishlist_items:
-        exists = True
+    if request.user.username:
+        wishlist_items = Listing.objects.filter(user=request.user)
+        if listing in wishlist_items:
+            exists = True
     return render(request, "auctions/listing_view.html", {
         "listing": listing,
         "exists": exists,
+        "bids": Bid.objects.filter(listing=listing),
+        "min_value": listing.price + 5
     })
+
+def placebid(request, listing):
+    listing = Listing.objects.get(title=listing)
+    if request.method == "POST":
+        bid = Bid()
+        bid.listing = listing
+        bid.name = request.user
+        bid.bid = request.POST.get('bid')
+        bid.save()
+        listing.price = bid.bid
+        listing.save()
+
+        return HttpResponseRedirect(f'/listing/{listing}')
+    else:
+        return HttpResponseRedirect(f'/listing/{listing}')
 
 def categories(request):
     return render(request, "auctions/categories.html",{

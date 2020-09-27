@@ -21,6 +21,15 @@ class Listing(models.Model):
 
 class User(AbstractUser):
     listings = models.ManyToManyField(Listing)
+
+class Bid(models.Model):
+    listing = models.ForeignKey(Listing, related_name="bids", on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    bid = models.IntegerField()
+    creation_date = models.DateTimeField(auto_now_add = True, editable=False)
+
+    def __str__(self):
+        return f"{self.name}: ${self.bid} Bid on {self.listing.title}"
         
 class Comment(models.Model):
     listing = models.ForeignKey(Listing, related_name="comments", on_delete=models.CASCADE)

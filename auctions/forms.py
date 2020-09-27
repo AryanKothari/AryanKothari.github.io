@@ -19,6 +19,9 @@ class NewListingForm(forms.Form):
         super(NewListingForm, self).__init__(*args, **kwargs)
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+    
+    def clean_title(self):
+        return self.cleaned_data['title'].capitalize()
 
 class NewCommentForm(forms.Form):
-    body = forms.CharField(label="Type Your Comment Here:", widget=forms.Textarea(attrs={"rows":10, "cols":80}))
+    body = forms.CharField(label="Type Your Comment Here:", widget=forms.Textarea(attrs={"rows":10, "cols":80, 'class': 'form-control'}))
