@@ -75,9 +75,8 @@ def listing_view(request, listing):
     })
 
 def categories(request):
-    categories = Listing.objects.values_list('category', flat=True).distinct()
     return render(request, "auctions/categories.html",{
-        "categories": categories,
+        "categories": ['No Category', 'Fashion', 'Sport', 'Electronics', 'Accesories'],
     })
 
 def category_view(request, category):
