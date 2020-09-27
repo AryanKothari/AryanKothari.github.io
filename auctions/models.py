@@ -12,6 +12,8 @@ class Listing(models.Model):
     category = models.CharField(max_length=100, blank=True, default="Unspecified")
     creation_date = models.DateTimeField(auto_now_add = True, editable=False)
     imageURL = models.CharField(max_length=64,default=None,blank=True,null=True)
+    seller = models.CharField(max_length=255)
+    buyer = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         return f"{self.title}"

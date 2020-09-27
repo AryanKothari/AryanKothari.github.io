@@ -1,0 +1,19 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h4 style="margin-left: 10px; font-weight: normal;">Congrats, <strong>{{username}}</strong>! You Own the Following:</h4>
+{% for listing in listings %}
+<div class="listing">
+        <h4 style="text-align: left; padding-top: 10px; margin-left: 30px;"> {{ listing.title }} </h4> 
+    <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">Category: {{listing.category}}</h7>
+    <hr style="clear:both; margin-top: -30px;"/>
+    <img src="{{ listing.imageURL }}">
+    <h6 style="padding-top: -30px; margin-left: 300px;">Description:</h4>
+        <p style="margin-left: 300px;">{{listing.description}}</p>
+         <br>
+    <h6 style="padding-top: 5px; margin-left: 300px;">Bought For:</h4>
+         <p style="margin-left: 300px;">${{listing.price}}</p> <br><br>
+         <p style="text-align: right; float: right; font-weight: lighter; margin-right: 30px; margin-top: -25px;">{{listing.creation_date}} UTC</p>
+</div>
+{% endfor %}
+{% endblock %}

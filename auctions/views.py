@@ -21,6 +21,7 @@ def create_listing(request):
             listing.title = form.cleaned_data['title']
             listing.description = form.cleaned_data['description']
             listing.price = form.cleaned_data['starting_bid']
+            listing.seller = request.user
             imageURL = ""
             listing.category = form.cleaned_data['category']
             if request.POST.get('imageURL'):
@@ -67,15 +68,19 @@ def create_comment(request, listing):
 def listing_view(request, listing):
     listing = Listing.objects.get(title=listing)
     exists = False
+    owner = False
     if request.user.username:
         wishlist_items = Listing.objects.filter(user=request.user)
+        if request.user.username == listing.seller:
+            owner = True
         if listing in wishlist_items:
             exists = True
     return render(request, "auctions/listing_view.html", {
         "listing": listing,
         "exists": exists,
         "bids": Bid.objects.filter(listing=listing),
-        "min_value": listing.price + 5
+        "min_value": listing.price + 5,
+        "owner": owner,
     })
 
 def placebid(request, listing):
@@ -92,6 +97,13 @@ def placebid(request, listing):
         return HttpResponseRedirect(f'/listing/{listing}')
     else:
         return HttpResponseRedirect(f'/listing/{listing}')
+
+def items_owned(request, username):
+    listings = Listing.objects.filter(buyer=username)
+    return render(request, "auctions/items_owned.html", {
+        "username": username,
+        "listings": listings,
+    })
 
 def categories(request):
     return render(request, "auctions/categories.html",{
@@ -123,6 +135,14 @@ def removewishlist(request, listing):
         return HttpResponseRedirect(f'/listing/{listing}')
     else:
         return HttpResponseRedirect(f'/listing/{listing}')
+
+def end_listing(request, listing):
+    listing = Listing.objects.get(title=listing)
+    all_bids = Bid.objects.filter(listing=listing)
+    highest_bidder = all_bids.last().name
+    listing.buyer = highest_bidder
+    listing.save()
+    return HttpResponseRedirect(f'/')
 
 
 def login_view(request):

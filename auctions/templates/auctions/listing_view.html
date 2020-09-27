@@ -1,13 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-<h2 style="margin-left: 10px; padding-bottom: 10px;">Listing: {{listing.title }} </h2>
+
+<h2 style="margin-left: 10px; padding-bottom: 10px;">{{listing.title}} </h2> 
+<h1>{{highest}}</h1>
 {% if user.is_authenticated %}
+  {% if owner == False %}
     {% if exists %}
-        <a href="{% url 'remove_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 400px; margin-top: -55px;"><button class="btn btn-danger">Remove from wishlist</button></a>
+        <a href="{% url 'remove_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 200px; margin-top: -55px;"><button class="btn btn-danger">Remove from wishlist</button></a>
     {% else %}
-        <a href="{% url 'add_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 450px; margin-top: -55px;"><button class="btn btn-success">Add to wishlist</button></a>
+        <a href="{% url 'add_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 240px; margin-top: -55px;"><button class="btn btn-success">Add to wishlist</button></a>
     {% endif %}
+  {% endif %}
 {% endif %}
 <div class="listing_view">
     <a href="categories/{{listing.category}}" style="color:crimson;">
@@ -23,6 +27,7 @@
 </div> <br>
 
 {% if user.is_authenticated %}
+  {% if owner == False %}
 <div class="container" style="float: left; margin-top: -70px;">
     <h4>Place your bid:</h4>
     <form action="{% url 'place_bid' listing.title %}" method="POST">
@@ -36,10 +41,20 @@
             </div>
           </div>
     </form>
+  {% endif %}
+    {% if owner %}
+    <div class="col-auto">
+        <form action="{% url 'end_listing' listing.title %}" method="POST">
+          {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="margin-left: 280px; margin-top: -82px">End Listing</button>
+        </form>
+      </div>
+    {% endif %}
 </div> 
 {% endif %}
+
 <br>
-<h6 style="margin-left: 10px;">Bid History:</h6>
+<h6 style="margin-left: 10px; margin-right: 200px;">Bid History:</h6>
 {% for bid in bids %} 
 <p style="margin-left: 10px; font-size: small;"> <strong>{{bid.name}}</strong> Placed a bid for <strong>${{ bid.bid }}</strong> on {{bid.creation_date}}</p>
 {% endfor %}
@@ -58,4 +73,6 @@
        <p style="margin-left: 10px; padding-bottom: 10px; font-size: small;">{{ comment.body }}</p>
     {% endfor %}
 {% endif %}
+
+
 {% endblock %}
