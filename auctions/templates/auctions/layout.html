@@ -24,7 +24,7 @@
                     <a class="nav-link" href="{% url 'categories' %}">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'wishlist_view' user.username %}">Wishlist</a>
+                    <a class="nav-link" href="{% url 'wishlist_view' user.username %}">Wishlist <span class="badge badge-success">{{wishlist_count}}</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'create_listing' %}">Create Listing</a>

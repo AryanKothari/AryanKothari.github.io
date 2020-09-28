@@ -6,11 +6,13 @@
 <h1>{{highest}}</h1>
 {% if user.is_authenticated %}
   {% if owner == False %}
+    {% if listing.active %}
     {% if exists %}
         <a href="{% url 'remove_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 200px; margin-top: -55px;"><button class="btn btn-danger">Remove from wishlist</button></a>
     {% else %}
         <a href="{% url 'add_wish_list' listing.title %}" style="float: right; text-align: right; margin-right: 240px; margin-top: -55px;"><button class="btn btn-success">Add to wishlist</button></a>
     {% endif %}
+  {% endif %}
   {% endif %}
 {% endif %}
 <div class="listing_view">
@@ -28,6 +30,7 @@
 
 {% if user.is_authenticated %}
   {% if owner == False %}
+    {% if listing.active %}
 <div class="container" style="float: left; margin-top: -70px;">
     <h4>Place your bid:</h4>
     <form action="{% url 'place_bid' listing.title %}" method="POST">
@@ -42,7 +45,9 @@
           </div>
     </form>
   {% endif %}
+  {% endif %}
     {% if owner %}
+      {% if listing.active %}
     <div class="col-auto">
         <form action="{% url 'end_listing' listing.title %}" method="POST">
           {% csrf_token %}
@@ -50,13 +55,27 @@
         </form>
       </div>
     {% endif %}
+    {% endif %}
 </div> 
+{% endif %}
+
+{% if listing.active == False %}
+{% if buyer %}
+<div class="alert alert-success" role="alert">
+  You have successfully bought this listing!
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+  This listing is no longer active. Please return to home page.
+</div>
+
+{% endif %}
 {% endif %}
 
 <br>
 <h6 style="margin-left: 10px; margin-right: 200px;">Bid History:</h6>
 {% for bid in bids %} 
-<p style="margin-left: 10px; font-size: small;"> <strong>{{bid.name}}</strong> Placed a bid for <strong>${{ bid.bid }}</strong> on {{bid.creation_date}}</p>
+<p style="margin-left: 10px; font-size: small;"> <strong>{{bid.name}}</strong> placed a bid for <strong>${{ bid.bid }}</strong> on {{bid.creation_date}}</p>
 {% endfor %}
 <hr> 
 <h5 style="margin-left: 10px; padding-bottom: 10px; font-weight: normal;">Comments...<a href="{% url 'create_comment' listing.title %}" style="font-size: small; padding-left: 10px;">Add One Here</a></h5>

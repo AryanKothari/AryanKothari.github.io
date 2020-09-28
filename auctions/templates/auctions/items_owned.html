@@ -4,7 +4,9 @@
 <h4 style="margin-left: 10px; font-weight: normal;">Congrats, <strong>{{username}}</strong>! You Own the Following:</h4>
 {% for listing in listings %}
 <div class="listing">
+    <a href="{% url 'listing_view' listing.title %}">
         <h4 style="text-align: left; padding-top: 10px; margin-left: 30px;"> {{ listing.title }} </h4> 
+    </a>
     <h7 style="float: right; text-align: right; margin-right: 20px; margin-top: -30px;">Category: {{listing.category}}</h7>
     <hr style="clear:both; margin-top: -30px;"/>
     <img src="{{ listing.imageURL }}">

@@ -10,7 +10,8 @@ from .forms import NewListingForm, NewCommentForm
 def index(request):
     listings = Listing.objects.all().order_by('-creation_date')
     return render(request, "auctions/index.html", {
-        "listings": listings
+        "listings": listings,
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count()
     })
 
 def create_listing(request):
@@ -36,12 +37,14 @@ def create_listing(request):
     else:
         return render(request, "auctions/create_listing.html", {
             "form": NewListingForm(),
+            "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
         })
 
 def wishlist_view(request, username):
     return render(request, "auctions/wishlist.html", {
         "username": username,
-        "listings": Listing.objects.filter(user__username=username)
+        "listings": Listing.objects.filter(user__username=username),
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
     })
 
 def create_comment(request, listing):
@@ -58,17 +61,22 @@ def create_comment(request, listing):
                 return render(request, "auctions/create_comment.html", {
                     "form": form,
                     "listing": listing,
+                    "wishlist_count": Listing.objects.filter(user__username=request.user).count()
                 })
     else:
         return render(request, "auctions/create_comment.html", {
         "form": NewCommentForm(),
         "listing": listing,
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count()
         })
 
 def listing_view(request, listing):
     listing = Listing.objects.get(title=listing)
     exists = False
     owner = False
+    buyer = False
+    if listing.buyer == request.user.username:
+        buyer = True
     if request.user.username:
         wishlist_items = Listing.objects.filter(user=request.user)
         if request.user.username == listing.seller:
@@ -81,6 +89,8 @@ def listing_view(request, listing):
         "bids": Bid.objects.filter(listing=listing),
         "min_value": listing.price + 5,
         "owner": owner,
+        "buyer": buyer,
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
     })
 
 def placebid(request, listing):
@@ -103,11 +113,13 @@ def items_owned(request, username):
     return render(request, "auctions/items_owned.html", {
         "username": username,
         "listings": listings,
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
     })
 
 def categories(request):
     return render(request, "auctions/categories.html",{
         "categories": ['No Category', 'Fashion', 'Sport', 'Electronics', 'Accesories'],
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
     })
 
 def category_view(request, category):
@@ -115,6 +127,7 @@ def category_view(request, category):
     return render(request, "auctions/category_view.html", {
         "category": category,
         "listings": listings,
+        "wishlist_count": Listing.objects.filter(user__username=request.user).count(),
     })
 
 
@@ -139,9 +152,13 @@ def removewishlist(request, listing):
 def end_listing(request, listing):
     listing = Listing.objects.get(title=listing)
     all_bids = Bid.objects.filter(listing=listing)
-    highest_bidder = all_bids.last().name
-    listing.buyer = highest_bidder
-    listing.save()
+    if all_bids.count() > 0:
+        highest_bidder = all_bids.last().name
+        listing.buyer = highest_bidder
+        listing.active = False
+        listing.save()
+    else:
+        listing.delete()
     return HttpResponseRedirect(f'/')
 
 

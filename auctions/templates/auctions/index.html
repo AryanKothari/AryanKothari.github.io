@@ -3,6 +3,7 @@
 {% block body %}
     <h2 style="margin-left: 10px;">Active Listings</h2>
     {% for listing in listings %}
+    {% if listing.active %}
     <div class="listing">
         <a href="{% url 'listing_view' listing.title %}">
             <h4 style="text-align: left; padding-top: 10px; margin-left: 30px;"> {{ listing.title }} </h4> 
@@ -19,5 +20,6 @@
              <p style="margin-left: 300px;">${{listing.price}}</p> <br><br>
              <p style="text-align: right; float: right; font-weight: lighter; margin-right: 30px; margin-top: -25px;">{{listing.creation_date}} UTC</p>
     </div>
+    {% endif %}
     {% endfor %}
 {% endblock %}

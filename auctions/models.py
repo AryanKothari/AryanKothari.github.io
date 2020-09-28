@@ -14,6 +14,7 @@ class Listing(models.Model):
     imageURL = models.CharField(max_length=64,default=None,blank=True,null=True)
     seller = models.CharField(max_length=255)
     buyer = models.CharField(max_length=255, null=True)
+    active = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.title}"
